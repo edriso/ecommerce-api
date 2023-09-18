@@ -1,17 +1,25 @@
 require('dotenv').config();
+require('express-async-errors');
 const express = require('express');
 const connectDB = require('./db/connect');
-const notFound = require('./middleware/not-found');
-const errorHandler = require('./middleware/error-handler');
+const notFoundMiddleware = require('./middleware/not-found');
+const errorHandlerMiddleware = require('./middleware/error-handler');
 
 const app = express();
 
+if (process.env.NODE_ENV === 'development') {
+  const morgan = require('morgan');
+  app.use(morgan('dev'));
+}
+
+app.use(express.json());
+
 app.get('/', (req, res) => {
-  res.send('E Commerce API');
+  res.send('<h1>E-commerce API</h1>');
 });
 
-app.use(notFound);
-app.use(errorHandler);
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 const startServer = async () => {
   try {
