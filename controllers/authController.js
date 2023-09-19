@@ -1,10 +1,11 @@
 const User = require('../models/user');
 const CustomError = require('../errors');
+const { createJWT } = require('../utils');
 
 const register = async (req, res) => {
   const { name, email, password } = req.body;
 
-  const emailExists = await User.find({ email });
+  const emailExists = await User.findOne({ email });
   if (emailExists) {
     throw new CustomError.BadRequestError('Email already in use');
   }
@@ -14,7 +15,11 @@ const register = async (req, res) => {
   //   const role = isFirstAccount ? 'admin' : 'user';
 
   const user = await User.create({ name, email, password });
-  res.status(201).json({ user });
+
+  const tokenUser = { name: user.name, userId: user.id, role: user.role };
+  const token = createJWT({ payload: tokenUser });
+
+  res.status(201).json({ user: tokenUser, token });
 };
 
 const login = async (req, res) => {
@@ -22,7 +27,10 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  res.send('logout');
+  // const users = await User.find({});
+  const users = await User.deleteMany({});
+  res.json({ users });
+  // res.send('logout');
 };
 
 module.exports = {
