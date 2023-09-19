@@ -4,6 +4,7 @@ const express = require('express');
 const connectDB = require('./db/connect');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
+const authRouter = require('./routes/authRoutes');
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('<h1>E-commerce API</h1>');
 });
+
+app.use('/api/v1/auth', authRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
