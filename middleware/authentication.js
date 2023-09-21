@@ -22,6 +22,9 @@ const authenticateUser = (req, res, next) => {
 };
 
 const authorizePermissions = (...authorizedRoles) => {
+  // when adding authorizePermissions middleware, we write it like this authorizePermissions('admin', 'owner')
+  // but this call the function immediately
+  // that's why we must return a function to reference to it
   return (req, res, next) => {
     if (!authorizedRoles.includes(req.user.role)) {
       throw new CustomError.UnauthorizedError(
