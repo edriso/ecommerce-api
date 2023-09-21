@@ -2,12 +2,17 @@ const User = require('../models/user');
 const CustomError = require('../errors');
 
 const getAllUsers = async (req, res) => {
-  // const users = await User.find({})
-  res.send('getAllUsers');
+  const users = await User.find({ role: 'user' }).select('-password');
+  res.json({ count: users.length, users });
 };
 
 const getSingleUser = async (req, res) => {
-  res.send('getSingleUser');
+  const { id: userId } = req.params.id;
+  const user = await User.findOneById(userId).select('-password');
+  if (!user) {
+    throw new CustomError.NotFoundError(`No user with id: ${userId}`);
+  }
+  res.json({ user });
 };
 
 const showCurrentUser = async (req, res) => {
