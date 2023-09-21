@@ -3,7 +3,7 @@ const CustomError = require('../errors');
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({ role: 'user' }).select('-password');
-  res.json({ count: users.length, users });
+  res.json({ totalUsers: users.length, users });
 };
 
 const getSingleUser = async (req, res) => {
@@ -16,7 +16,7 @@ const getSingleUser = async (req, res) => {
 };
 
 const showCurrentUser = async (req, res) => {
-  res.send('showCurrentUser');
+  res.json({ user: req.user });
 };
 
 const updateUser = async (req, res) => {
