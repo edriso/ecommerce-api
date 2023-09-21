@@ -23,7 +23,7 @@ const authenticateUser = (req, res, next) => {
 
 const authorizePermissions = (req, res, next) => {
   if (req.user.role !== 'admin') {
-    throw new CustomError.ForbiddenError('Admin only');
+    throw new CustomError.UnauthorizedError('Admin only');
   }
   next();
 };
