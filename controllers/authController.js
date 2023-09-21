@@ -23,15 +23,31 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  console.log(req.cookies);
-  res.send('login');
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new CustomError.BadRequestError('Missing Email or password');
+  }
+
+  const user = await User.find({ email });
+
+  if (!user) {
+    throw new CustomError.UnauthenticatedError('Invalid credentials');
+  }
+
+  if (!user.checkPassword(password)) {
+    throw new CustomError.UnauthenticatedError('Invalid credentials');
+  }
+
+  const tokenUser = { name: user.name, userId: user.id, role: user.role };
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.json({ user: tokenUser });
 };
 
 const logout = async (req, res) => {
-  // const users = await User.find({});
+  console.log(req.signedCookies);
   const users = await User.deleteMany({});
   res.json({ users });
-  // res.send('logout');
 };
 
 module.exports = {
