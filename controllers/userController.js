@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const CustomError = require('../errors');
+const { createTokenUser, attachCookiesToResponse } = require('../utils');
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({ role: 'user' }).select('-password');
@@ -20,7 +21,22 @@ const showCurrentUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  res.send('updateUser');
+  const { name, email } = req.body;
+
+  if (!name || !email) {
+    throw new CustomError.BadRequestError('Please provide name and email');
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user.userId,
+    { name, email },
+    { runValidators: true, new: true },
+  );
+
+  const tokenUser = createTokenUser(user);
+  attachCookiesToResponse({ res, user: tokenUser });
+
+  res.json({ user: tokenUser });
 };
 
 const updateUserPassword = async (req, res) => {
