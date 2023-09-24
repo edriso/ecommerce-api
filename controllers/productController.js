@@ -1,3 +1,4 @@
+const path = require('path');
 const Product = require('../models/Product');
 const CustomError = require('../errors');
 
@@ -45,7 +46,30 @@ const deleteProduct = async (req, res) => {
 };
 
 const uploadImage = async (req, res) => {
-  res.send('uploadImage');
+  if (!req.files) {
+    throw new CustomError.BadRequestError('No file uploaded.');
+  }
+
+  const productImage = req.files.image;
+
+  if (!productImage.mimetype.startsWith('image')) {
+    throw new CustomError.BadRequestError('Please upload an image.');
+  }
+
+  const maxSize = 1024 * 1024 * 1;
+
+  if (productImage.size > maxSize) {
+    throw new CustomError.BadRequestError(
+      'Please upload an image with maximum size of 1 MB.',
+    );
+  }
+
+  const imageName = new Date().valueOf() + '-' + productImage.name;
+  const imagePath = path.join(__dirname, `../public/uploads/${imageName}`);
+
+  await productImage.mv(imagePath);
+
+  res.json({ img: `/uploads/${imageName}` });
 };
 
 module.exports = {
