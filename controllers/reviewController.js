@@ -4,7 +4,21 @@ const CustomError = require('../errors');
 const { checkPermissions } = require('../utils');
 
 const getAllReviews = async (req, res) => {
-  res.send('getAllReviews');
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const reviews = await Review.find({}).skip(skip).limit(limit);
+
+  const totalReviews = await Review.countDocuments({});
+  const numberOfPages = Math.ceil(totalReviews / limit);
+
+  res.json({
+    currentPage: page,
+    numberOfPages,
+    allReviewsCount: totalReviews,
+    reviews,
+  });
 };
 
 const createReview = async (req, res) => {
@@ -34,7 +48,12 @@ const createReview = async (req, res) => {
 };
 
 const getSingleReview = async (req, res) => {
-  res.send('getSingleReview');
+  const { id: reviewId } = req.params;
+  const review = await Review.findOne({ _id: reviewId });
+  if (!review) {
+    throw new CustomError.NotFoundError(`No review with id: ${reviewId}`);
+  }
+  res.json({ review });
 };
 
 const updateReview = async (req, res) => {
