@@ -4,7 +4,7 @@ const CustomError = require('../errors');
 
 const getAllProducts = async (req, res) => {
   const products = await Product.find({});
-  res.json({ totalCount: products.length, products });
+  res.json({ count: products.length, products });
 };
 
 const getSingleProduct = async (req, res) => {

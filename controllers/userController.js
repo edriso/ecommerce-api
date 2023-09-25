@@ -8,7 +8,7 @@ const {
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({ role: 'user' }).select('-password');
-  res.json({ totalUsers: users.length, users });
+  res.json({ count: users.length, users });
 };
 
 const getSingleUser = async (req, res) => {
