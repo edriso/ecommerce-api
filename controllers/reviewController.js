@@ -14,10 +14,10 @@ const getAllReviews = async (req, res) => {
   const numberOfPages = Math.ceil(totalReviews / limit);
 
   res.json({
-    currentPage: page,
-    numberOfPages,
     allReviewsCount: totalReviews,
     reviews,
+    currentPage: page,
+    numberOfPages,
   });
 };
 
@@ -57,7 +57,24 @@ const getSingleReview = async (req, res) => {
 };
 
 const updateReview = async (req, res) => {
-  res.send('updateReview');
+  const review = await Review.findById(req.params.id);
+
+  if (!review) {
+    throw new CustomError.NotFoundError(`No review with id: ${req.params.id}`);
+  }
+
+  checkPermissions({
+    requestUser: req.user,
+    resourceUserId: review.user,
+  });
+
+  const { rating, title, comment } = req.body;
+  review.rating = rating;
+  review.title = title;
+  review.comment = comment;
+  await review.save();
+
+  res.json({ review });
 };
 
 const deleteReview = async (req, res) => {
