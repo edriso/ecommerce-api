@@ -10,11 +10,13 @@ const reviewSchema = new mongoose.Schema(
     },
     title: {
       type: String,
+      trim: true,
       maxlength: 100,
       required: [true, 'Please provide a title for your review'],
     },
     comment: {
       type: String,
+      trim: true,
       required: [true, 'Please provide a comment for your review'],
     },
     user: {
