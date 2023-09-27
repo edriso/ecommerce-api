@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getAllProducts,
   getSingleProduct,
+  getSingleProductReviews,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -27,5 +28,7 @@ router
   .get(getSingleProduct)
   .patch([authenticateUser, authorizePermissions('admin')], updateProduct)
   .delete([authenticateUser, authorizePermissions('admin')], deleteProduct);
+
+router.route('/:id/reviews').get(getSingleProductReviews);
 
 module.exports = router;

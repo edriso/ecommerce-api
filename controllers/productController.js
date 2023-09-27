@@ -1,5 +1,6 @@
 const path = require('path');
 const Product = require('../models/Product');
+const Review = require('../models/Review');
 const CustomError = require('../errors');
 
 const getAllProducts = async (req, res) => {
@@ -13,6 +14,12 @@ const getSingleProduct = async (req, res) => {
     throw new CustomError.NotFoundError(`No product with id: ${req.params.id}`);
   }
   res.json({ product });
+};
+
+const getSingleProductReviews = async (req, res) => {
+  const { id: productId } = req.params;
+  const reviews = await Review.find({ product: productId });
+  res.json({ count: reviews.length, reviews });
 };
 
 const createProduct = async (req, res) => {
@@ -75,6 +82,7 @@ const uploadImage = async (req, res) => {
 module.exports = {
   getAllProducts,
   getSingleProduct,
+  getSingleProductReviews,
   createProduct,
   updateProduct,
   deleteProduct,
