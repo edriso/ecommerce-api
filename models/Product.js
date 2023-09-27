@@ -64,8 +64,20 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 );
+
+productSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id', // _id is PR in Product model
+  foreignField: 'product', // product is a foreign key in Review model
+  justOne: false, // as we want a list of all reviews
+  // match: { rating: 5 }, // get only docs where rating === 5
+});
 
 const Product = mongoose.model('Product', productSchema);
 
