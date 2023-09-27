@@ -8,7 +8,18 @@ const getAllReviews = async (req, res) => {
   const limit = Number(req.query.limit) || 10;
   const skip = (page - 1) * limit;
 
-  const reviews = await Review.find({}).skip(skip).limit(limit);
+  // populate allows us to reference documents in other collection
+  const reviews = await Review.find({})
+    .populate({
+      path: 'product', // product as the field name in Review model
+      select: 'name company price', // fields in Product model
+    })
+    .populate({
+      path: 'user',
+      select: 'name',
+    })
+    .skip(skip)
+    .limit(limit);
 
   const totalReviews = await Review.countDocuments({});
   const numberOfPages = Math.ceil(totalReviews / limit);
