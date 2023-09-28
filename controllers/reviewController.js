@@ -24,11 +24,18 @@ const getAllReviews = async (req, res) => {
   const totalReviews = await Review.countDocuments({});
   const numberOfPages = Math.ceil(totalReviews / limit);
 
+  if (numberOfPages > page) {
+    return res.json({
+      count: totalReviews,
+      reviews,
+      currentPage: page,
+      numberOfPages,
+    });
+  }
+
   res.json({
-    allReviewsCount: totalReviews,
+    count: totalReviews,
     reviews,
-    currentPage: page,
-    numberOfPages,
   });
 };
 
