@@ -1,9 +1,9 @@
 const express = require('express');
 const {
+  createOrder,
   getAllOrders,
   getSingleOrder,
   getCurrentUserOrders,
-  createOrder,
   updateOrder,
 } = require('../controllers/orderController');
 const {
@@ -15,8 +15,8 @@ const router = express.Router();
 
 router
   .route('/')
-  .get([authenticateUser, authorizePermissions('admin')], getAllOrders)
-  .post(authenticateUser, createOrder);
+  .post(authenticateUser, createOrder)
+  .get([authenticateUser, authorizePermissions('admin')], getAllOrders);
 
 router.route('/showAllMyOrders').get(authenticateUser, getCurrentUserOrders);
 
