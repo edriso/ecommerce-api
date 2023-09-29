@@ -5,7 +5,7 @@ const singleCartItemSchema = mongoose.Schema({
   image: { type: String, required: true },
   price: { type: Number, required: true },
   amount: { type: Number, required: true },
-  productId: {
+  product: {
     type: mongoose.Types.ObjectId,
     ref: 'Product',
     required: true,
