@@ -11,7 +11,12 @@ const userRouter = require('./routes/userRoutes');
 const productRouter = require('./routes/productRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const orderRouter = require('./routes/orderRoutes');
-const { authenticateUser } = require('./middleware/authentication');
+// security packages
+const rateLimiter = require('express-rate-limit');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const mongoSanitize = require('express-mongo-sanitize');
+// const cors = require('cors');
 
 const app = express();
 
@@ -19,6 +24,23 @@ if (process.env.NODE_ENV === 'development') {
   const morgan = require('morgan');
   app.use(morgan('dev'));
 }
+
+app.set('trust proxy', 1);
+app.use(
+  rateLimiter({
+    windowMs: 15 * 60 * 1000,
+    limit: 60,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+  }),
+);
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
+// app.use(cors());
+// we might need cors but remember 💡:
+// we send jwt with cookies, and cookies works if the frontend in the same domain of the server
+// so for that we might implement token instead of cookies, or search for another solution
 
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
