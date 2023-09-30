@@ -5,17 +5,18 @@ Designed with simplicity, security, and efficiency in mind, this API invites you
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
-- [Security](#security)
-- [Documentation](#documentation)
-  - [API Documentation](#api-documentation)
-  - [Postman Documentation](#postman-documentation)
-- [Useful Takeaways](#useful-takeaways)
+- [E-commerce API](#e-commerce-api)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [API Endpoints](#api-endpoints)
+  - [Security](#security)
+  - [Documentation](#documentation)
+    - [API Documentation](#api-documentation)
+    - [Postman Documentation](#postman-documentation)
+  - [Useful Takeaways](#useful-takeaways)
 
 ## Introduction
 
@@ -108,7 +109,7 @@ You can access the API documentation by visiting the root route of the applicati
 
 To enhance usability, the API endpoints have been documented in Postman.
 
-You can find the collection in the `docs-postman.json` file. Import this collection into your Postman application to interactively explore the available endpoints.
+You can find the collection in the `ecommerce-api.postman_collection` file. Import this collection into your Postman application to interactively explore the available endpoints.
 
 ## Useful Takeaways
 
