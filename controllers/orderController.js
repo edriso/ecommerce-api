@@ -69,19 +69,38 @@ const createOrder = async (req, res) => {
 };
 
 const getAllOrders = async (req, res) => {
-  res.json('getAllOrder');
+  const orders = await Order.find({});
+  res.json({ count: orders.length, orders });
 };
 
 const getSingleOrder = async (req, res) => {
-  res.json('getSingleOrder');
+  const order = await Order.findById(req.params.id);
+  if (!order) {
+    throw new CustomError.NotFoundError(`No Order with id: ${req.params.id}`);
+  }
+  checkPermissions({ requestUser: req.user, resourceUserId: order.user });
+  res.json({ order });
 };
 
 const getCurrentUserOrders = async (req, res) => {
-  res.json('getCurrentUserOrders');
+  const userOrders = await Order.find({ user: req.user.userId });
+  res.json({ count: userOrders.length, orders: userOrders });
 };
 
 const updateOrder = async (req, res) => {
-  res.json('updateOrder');
+  const order = await Order.findById(req.params.id);
+  const { paymentIntentId } = req.body;
+
+  if (!order) {
+    throw new CustomError.NotFoundError(`No Order with id: ${req.params.id}`);
+  }
+  checkPermissions({ requestUser: req.user, resourceUserId: order.user });
+
+  order.paymentIntentId = paymentIntentId;
+  order.status = 'paid';
+  await order.save();
+
+  res.json({ order });
 };
 
 module.exports = {
