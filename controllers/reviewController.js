@@ -74,10 +74,7 @@ const updateReview = async (req, res) => {
     throw new CustomError.NotFoundError(`No review with id: ${req.params.id}`);
   }
 
-  checkPermissions({
-    requestUser: req.user,
-    resourceUserId: review.user,
-  });
+  checkPermissions({ requestUser: req.user, resourceUserId: review.user });
 
   const { rating, title, comment } = req.body;
   review.rating = rating;
@@ -94,7 +91,6 @@ const deleteReview = async (req, res) => {
   if (!review) {
     throw new CustomError.NotFoundError(`No review with id: ${reviewId}`);
   }
-
   checkPermissions({ requestUser: req.user, resourceUserId: review.user });
 
   await review.deleteOne();
