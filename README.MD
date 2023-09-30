@@ -1,376 +1,110 @@
-## Hosted Project
+#E-commerce API
 
-[E-Commerce API Heroku URL](https://e-commerce-api-10.herokuapp.com/)
+Welcome to E-commerce API! This application provides various endpoints for managing users, products, reviews, and orders within an e-commerce and online store environment.
+Designed with simplicity, security, and efficiency in mind, this API invites you to explore its core functionalities that drive seamless e-commerce experiences!
 
-#### Setup Basic Express Server
+## Table of Contents
 
-- [] import express and assign to variable
-- [] setup start port variable (5000) and start function
+- [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Security](#security)
+- [Documentation](#documentation)
+  - [API Documentation](#api-documentation)
+  - [Postman Documentation](#postman-documentation)
 
-#### Connect To DB
+## Introduction
 
-- [] get connection string
-- [] setup .env with MONGO_URL variable and assign the value
-- [] import 'dotenv' and setup package
-- [] import connect() and invoke in the starter
-- [] restart the server
-- [] mongoose V6 info
+This Express.js application serves as the backend for an e-commerce platform, credits to John Smilga for the valuable insights and knowledge shared in his node.js course. The application allows users to register, log in, browse products, leave reviews, and create orders. The API is designed to be secure, scalable, and easy to use.
 
-#### Basic Routes and Middleware
+## Features
 
-- [] setup / GET Route
-- [] setup express.json() middleware
-- [] setup 404 and errorHandler middleware
-- [] import 'exress-async-errors' package
+- User authentication and authorization.
+- CRUD operations for users, products, reviews, and orders.
+- File upload functionality for product images.
+- Security measures, including rate limiting, helmet protection, and data sanitization.
+- Error handling and logging for improved debugging.
 
-#### 404 vs ErrorHandler Middleware
+## Installation
 
-#### Morgan Pacakge
+1. Clone the repository: `git clone https://github.com/edriso/ecommerce-api.git`
+2. Install dependencies: `npm install`
+3. Rename the `.env.example` file to `.env`.
+4. Open the `.env` file and set the environment variables specified within.
 
-- [Morgan Package](https://www.npmjs.com/package/morgan)
+## Usage
 
-#### User Model
+To start the server, run the following command:
 
-- [] create models folder and User.js file
-- [] create schema with name,email, password (all type:String)
-- [] export mongoose model
+```bash
+npm start
+```
 
-#### Validator Package
+The server will start on the specified port (or default to 5000 if not changed in the .env file).
 
-- [Validator](https://www.npmjs.com/package/validator)
+## API Endpoints
 
-#### Auth Routes Structure
+- **Authentication:**
 
-- [] create controllers folder
-- [] add authController file
-- [] export (register,login,logout) functions
-- [] res.send('some string value')
-- [] create routes folder
-- [] setup authRoutes file
-- [] import all controllers
-- [] setup three routes
-- [] post('/register') post('/login') get('/logout')
-- [] import authRoutes as authRouter in the app.js
-- [] setup app.use('/api/v1/auth', authRouter)
+  - `POST /api/v1/auth/register` - Register a new user.
+  - `POST /api/v1/auth/login` - User login.
+  - `GET /api/v1/auth/logout` - User logout.
 
-#### Test Routes in Postman
+- **Users:**
 
-#### Register Controller
+  - `GET /api/v1/users` - Get all users (admin only).
+  - `GET /api/v1/users/:id` - Get a single user by ID (admin only).
+  - `PUT /api/v1/users/:id` - Update a user by ID (admin only).
+  - `DELETE /api/v1/users/:id` - Delete a user by ID (admin only).
 
-- [] create user
-- [] send response with entire user (only while testing)
-- [] check if email already in use (schema and controller)
-- [] ignore 'role'
-- [] alternative 'admin' setup
+- **Products:**
 
-#### Handle Password
+  - `GET /api/v1/products` - Get all products.
+  - `GET /api/v1/products/:id` - Get a single product by ID.
+  - `POST /api/v1/products` - Create a new product (admin only).
+  - `PUT /api/v1/products/:id` - Update a product by ID (admin only).
+  - `DELETE /api/v1/products/:id` - Delete a product by ID (admin only).
 
-- [] UserSchema.pre('save') - hook
-- this points to User
-- bcrypt.genSalt - number of rounds
-- bcrypt.hash
+- **Reviews:**
 
-#### JWT
+  - `GET /api/v1/reviews` - Get all reviews.
+  - `GET /api/v1/reviews/:id` - Get a single review by ID.
+  - `POST /api/v1/reviews` - Create a new review.
+  - `PUT /api/v1/reviews/:id` - Update a review by ID.
+  - `DELETE /api/v1/reviews/:id` - Delete a review by ID.
 
-- [] require 'jsonwebtoken' package
-- [] create jwt - jwt.sign(payload,secret,options)
-- [] verify jwt - jwt.verify(token,secret)
-- [] add variables in .env JWT_SECRET=jwtSecret and JWT_LIFETIME=1d
-- [] restart the server !!!!
-- [] refactor code, create jwt functions in utils
-- [] refactor cookie code
-- [] setup func attachCookiesToResponse
-- [] accept payload(res, tokenUser)
-- [] create token, setup cookie
-- [] optionally send back the response
+- **Orders:**
+  - `GET /api/v1/orders` - Get all orders (admin only).
+  - `GET /api/v1/orders/:id` - Get a single order by ID (admin only).
+  - `POST /api/v1/orders` - Create a new order.
+  - `PUT /api/v1/orders/:id` - Update an order by ID (admin only).
+  - `DELETE /api/v1/orders/:id` - Delete an order by ID (admin only).
 
-#### Login Route
+## Security
 
-- [] check if email and password exist, if one missing return 400
-- [] find user, if no user return 401
-- [] check password, if does not match return 401
-- [] if everything is correct, attach cookie
-  and send back the same response as in register
+This API implements several security measures, including:
 
-#### Logout Route
+- **Rate Limiting:** Limits the number of requests a client can make within a specified time frame.
+- **Helmet Protection:** Adds various HTTP headers to enhance security.
+- **XSS Protection:** Sanitizes user input to prevent cross-site scripting attacks.
+- **Data Sanitization:** Prevents NoSQL query injection by sanitizing user-supplied data.
+- **CORS:** Enables Cross-Origin Resource Sharing to control which domains can access the API.
 
-- [] set token cookie equal to some string value
-- [] set expires:new Date(Date.now())
+## Documentation
 
-#### User Routes Structure
+#### API Documentation
 
-- [] add userController file
-- [] export (getAllUsers,getSingleUser,showCurrentUser,updateUser,updateUserPassword) functions
-- [] res.send('some string value')
-- [] setup userRoutes file
-- [] import all controllers
-- [] setup just one route - router.route('/').get(getAllUsers);
-- [] import userRoutes as userRouter in the app.js
-- [] setup app.use('/api/v1/users', userRouter)
+You can access the API documentation by visiting the root route of the application. The documentation provides detailed information about the API endpoints, request/response formats, and usage examples.
 
-#### GetAllUsers and GetSingleUser
+**How to View:** Simply open your web browser and go to the root route, for example, `http://localhost:5000`.
 
-- [] Get all users where role is 'user' and remove password
-- [] Get Single User where id matches id param and remove password
-- [] If no user 404
+**Guidance:** Refer to this documentation for instructions on interacting with the API effectively and making the most of its features.
 
-#### Authenticate User Setup
+#### Postman Documentation
 
-#### Auth User Complete
+To enhance usability, the API endpoints have been documented in Postman.
 
-#### Authorize Permissions Setup
-
-- [] hardcode
-
-#### Authorize Permissions Complete
-
-- [] introduce params
-
-#### ShowCurrentUser
-
-- [] get user from req
-- [] send response with user
-
-#### UpdateUserPassword
-
-- [] almost identical to login user
-- [] add authenticateUser middleware in the route
-- [] check for oldPassword and newPassword in the body
-- [] if one missing 400
-- [] look for user with req.user.userId
-- [] check if oldPassword matches with user.comparePassword
-- [] if no match 401
-- [] if everything good set user.password equal to newPassword
-- [] await user.save()
-
-#### createTokenUser in Utils
-
-- [] create a file in utils (createTokenUser)
-- [] setup a function that accepts user object and returns userToken object
-- [] export as default
-- [] setup all the correct imports/exports and refactor existing code
-
-#### updateUser with User.findOneAndUpdate()
-
-- [] add authenticateUser middleware in the route
-- [] check for name and email in the body
-- [] if one is missing, send 400 (optional)
-- [] use findOneAndUpdate()
-- [] create token user, attachCookiesToResponse and send back the tokenUser
-
-#### updateUser with user.save()
-
-#### Setup and Apply checkPermissions()
-
-#### Product Model
-
-- [] create Product.js in models folder
-- [] create Schema
-- [] name : {type:String}
-- [] price: {type:Number}
-- [] description: {type:String}
-- [] image: {type:String}
-- [] category: {type:String}
-- [] company: {type:String}
-- [] colors: {type:[]}
-- [] featured: {type:Boolean}
-- [] freeShipping: {type:Boolean}
-- [] inventory:{type:Number}
-- [] averageRating:{type:Number}
-- [] user
-- [] set timestamps
-- [] export Product model
-
-#### Product Structure
-
-- [] add productController file in controllers
-- [] export (createProduct, getAllProducts,
-  getSingleProduct, updateProduct, deleteProduct, uploadImage) functions
-- [] res.send('function name')
-- [] setup productRoutes file in routes
-- [] import all controllers
-- [] only getAllProducts and getSingleProduct accessible to public
-- [] rest only by admin (setup middlewares)
-- [] typical setup
-- [] router.route('/uploadImage').post(uploadImage)
-- [] import productRoutes as productRouter in the app.js
-- [] setup app.use('/api/v1/products', productRouter)
-
-#### Product Routes in Postman
-
-#### Create Product
-
-- [] create user property on req.body and set it equal to userId (req.user)
-- [] pass req.body into Product.create
-- [] send back the product
-
-#### Remaining Controllers (apart from uploadImage)
-
-- [] getAllProducts
-- [] getSingleProduct
-- [] updateProduct
-- [] deleteProduct
-- [] typical CRUD, utilize (task or job) project
-- [] remember we check already for role 'admin'
-
-#### Upload Image
-
-- [] if some question, re-watch 07-file-upload
-- [] images folder with two images
-
-#### Review Model
-
-- [] create Review.js in models folder
-- [] create Schema
-- [] rating : {type:Number}
-- [] title: {type:String}
-- [] comment: {type:String}
-- [] user
-- [] product
-- [] set timestamps
-- [] export Review model
-
-#### Review Structure
-
-- [] add reviewController file in controllers
-- [] export (createReview, getAllReviews, getSingleReview, updateReview, deleteReview) functions
-- [] res.send('function name')
-- [] setup reviewRoutes file in routes
-- [] import all controllers
-- [] only getAllReviews and getSingleReview accessible to public
-- [] rest only to users (setup middleware)
-- [] typical REST setup
-- [] import reviewRoutes as reviewRouter in the app.js
-- [] setup app.use('/api/v1/reviews', reviewRouter)
-
-#### Create Review
-
-- [] check for product in the req.body
-- [] attach user property (set it equal to req.user.userId) on to req.body
-- [] create review
-- [] don't test yet
-
-#### Get All Reviews and Get Single Review
-
-- [] both public routes, typical setup
-
-#### Delete Review
-
-- [] get id from req.params
-- [] check if review exists
-- [] if no review, 404
-- [] check permissions (req.user, review.user)
-- [] use await review.remove()
-- [] send back 200
-
-#### Update Review
-
-- [] get id from req.params
-- [] get {rating, title comment} from req.body
-- [] check if review exists
-- [] if no review, 404
-- [] check permissions
-- [] set review properties equal to rating, title, comment
-- [] use await review.save()
-- [] send back 200
-
-#### Populate
-
-#### Virtuals
-
-#### Get Single Product Reviews
-
-#### Remove All Reviews
-
-#### Aggregation Pipeline - Atlas and Code
-
-#### Order Schema
-
-- [] create Order.js in models folder
-- [] create Schema
-- [] tax : {type:Number}
-- [] shippingFee: {type:Number}
-- [] subtotal: {type:Number}
-- [] total: {type:Number}
-- [] orderItems:[]
-- [] status:{type:String}
-- [] user
-- [] clientSecret:{type:String}
-- [] paymentId:{type:String}
-- [] set timestamps
-- [] export Order model
-
-#### Order Structure
-
-- [] add orderController file in controllers
-- [] export (getAllOrders, getSingleOrder, getCurrentUserOrders,
-  createOrder, updateOrder) functions
-- [] res.send('function name')
-- [] setup orderRoutes file in routes
-- [] import all controllers
-- [] authenticate user in all routes
-- [] getAllOrders admin only
-- [] typical REST setup
-- [] router.route('/showAllMyOrders').get(getCurrentUserOrders)
-- [] import orderRoutes as orderRouter in the app.js
-- [] setup app.use('/api/v1/orders', orderRouter)
-
-#### Order in Postman
-
-#### Create Order
-
-- [] most complex
-
-#### Get All Orders and Get Single Order
-
-- [] getAllOrders - admin only
-- [] getSingleOrder - chechPermissions
-
-#### Get Current User Orders
-
-- [] find orders where user is equal to req.user.userId
-
-#### Update Order
-
-- [] get order id
-- [] get paymentIntentId (req.body)
-- [] get order
-- [] if does not exist - 404
-- [] check permissions
-- [] set paymentIntentId and status as 'paid'
-- [] order.save()
-
-#### Create Docs
-
-- [] [Docgen Library] (https://github.com/thedevsaddam/docgen)
-- [] Export Postman Collection
-- [] docgen build -i fileName.json -o index.html
-- [] create index.html in public
-
-#### Security Packages
-
-- [] express-rate-limiter
-- [] helmet
-- [] xss-clean
-- [] express-mongo-sanitize
-- [] cors (cookies!!!!)
-
-#### Deploy on Heroku
-
-- [] heroku account and heroku cli
-- [] remove/copy from the main repo
-- [] add dev command "nodemon app.js"
-- [] change start to "node app.js"
-- [] setup node version in package.json
-- [] "engines": {"node": "14.x"}
-- [] Procfile "web: node app.js"
-- [] remove existing git repo
-- [] rm -rf .git - mac,
-- [] git init
-- [] git add .
-- [] git commit -m "initial commit"
-- [] heroku login
-- [] heroku create "App Name"
-- [] git remote -v
-- [] setup env vars in GUI
-- [] git push heroku master/main
+You can find the collection in the `docs-postman.json` file. Import this collection into your Postman application to interactively explore the available endpoints.
