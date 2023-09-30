@@ -1,4 +1,4 @@
-#E-commerce API
+# E-commerce API
 
 Welcome to E-commerce API! This application provides various endpoints for managing users, products, reviews, and orders within an e-commerce and online store environment.
 Designed with simplicity, security, and efficiency in mind, this API invites you to explore its core functionalities that drive seamless e-commerce experiences!
