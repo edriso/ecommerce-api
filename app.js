@@ -47,10 +47,6 @@ app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static('public'));
 app.use(fileUpload());
 
-app.get('/', (req, res) => {
-  res.send('<h1>E-commerce API</h1>');
-});
-
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/products', productRouter);
