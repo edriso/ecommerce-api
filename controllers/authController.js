@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/User');
 const CustomError = require('../errors');
 const { attachCookiesToResponse, createTokenUser } = require('../utils');
 
